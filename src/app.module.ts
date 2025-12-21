@@ -1,12 +1,19 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ConfigModule } from './config/config.module';
 import { PlantModule } from './plant/plant.module';
 import { FirebaseModule } from './firebase/firebase.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [PlantModule, ConfigModule, FirebaseModule],
+  imports: [
+    PlantModule,
+    ConfigModule,
+    FirebaseModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
