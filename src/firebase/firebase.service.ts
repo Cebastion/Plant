@@ -8,6 +8,9 @@ export class FirebaseService {
 
   constructor(@Inject('Firebase') private firebaseApp: app.App) {
     this.db = this.firebaseApp.firestore();
-    this.collection = this.db.collection('plant');
+  }
+
+  setCollection(collectionName: 'setting' | 'plant') {
+    this.collection = this.db.collection(collectionName);
   }
 }

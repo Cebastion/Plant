@@ -7,7 +7,12 @@ export class PlantController {
   constructor(private readonly plantService: PlantService) {}
 
   @Post('')
-  getDataPlant(@Body() plantDTO: PlantDTO) {
-    return this.plantService.getDataPlant(plantDTO);
+  saveDataPlant(@Body() plantDTO: PlantDTO) {
+    return this.plantService.saveDataPlant(plantDTO);
+  }
+
+  @Get('')
+  getDataPlant() {
+    return this.plantService.getDataPlant();
   }
 }
