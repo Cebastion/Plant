@@ -1,3 +1,4 @@
+// src/bridge/bridge.gateway.ts
 import {
   WebSocketGateway,
   WebSocketServer,
@@ -5,12 +6,11 @@ import {
   ConnectedSocket,
   MessageBody,
 } from '@nestjs/websockets';
-import { Server } from 'http';
-import { PlantDTO } from 'src/plant/DTO/plant.dto';
+import { Server, WebSocket } from 'ws';
 import { BridgeService } from './bridge.service';
-import { plainToInstance } from 'class-transformer';
+import { PlantDTO } from '../plant/DTO/plant.dto';
 
-@WebSocketGateway({ path: '/bridge' })
+@WebSocketGateway({ path: 'bridge', cors: { origin: '*' } })
 export class BridgeGateway {
   constructor(private readonly bridgeService: BridgeService) {}
 
@@ -21,18 +21,20 @@ export class BridgeGateway {
     console.log('ESP connected');
   }
 
-  @SubscribeMessage('plantData') // имя события
-  handleMessage(
+  @SubscribeMessage('plantData')
+  async handlePlantData(
     @ConnectedSocket() client: WebSocket,
-    @MessageBody() data: any,
+    @MessageBody() data: PlantDTO, // plain object сразу
   ) {
-    // Преобразуем plain object в PlantDTO
-    const plant: PlantDTO = plainToInstance(PlantDTO, JSON.parse(data));
+    try {
+      console.log('Temperature:', data.temperature);
+      console.log('Humidity:', data.humidity);
+      console.log('Light:', data.light);
+      console.log('Soil:', data.soil);
 
-    console.log(plant.temperature);
-    console.log(plant.humidity);
-
-    // Можно передавать дальше в сервис
-    this.bridgeService.GivePlantData(plant);
+      await this.bridgeService.givePlantData(data);
+    } catch (err) {
+      console.error('Ошибка при обработке данных:', err);
+    }
   }
 }

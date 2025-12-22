@@ -7,8 +7,8 @@ export class BridgeService {
   constructor(readonly firebaseService: FirebaseService) {
     firebaseService.setCollection('plant');
   }
-  async GivePlantData(plantDto: PlantDTO) {
-    await this.firebaseService.collection.doc('plant').set(plantDto);
-    return plantDto;
+  async givePlantData(plant: PlantDTO) {
+    await this.firebaseService.collection.doc('plant').set(plant);
+    return plant;
   }
 }
