@@ -13,6 +13,7 @@ export class SettingController {
 
   @Post('')
   async saveSetting(@Body() settingDTO: SettingDto[]) {
+    console.log(settingDTO);
     return this.settingService.saveSetting(settingDTO);
   }
 }

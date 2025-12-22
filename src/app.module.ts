@@ -5,6 +5,7 @@ import { PlantModule } from './plant/plant.module';
 import { FirebaseModule } from './firebase/firebase.module';
 import { ConfigModule } from '@nestjs/config';
 import { SettingModule } from './setting/setting.module';
+import { BridgeModule } from './bridge/bridge.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { SettingModule } from './setting/setting.module';
       isGlobal: true,
     }),
     SettingModule,
+    BridgeModule,
   ],
   controllers: [AppController],
   providers: [AppService],
