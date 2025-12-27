@@ -29,58 +29,61 @@ export class PlantService {
 
   async saveDataPlant(plantDTO: PlantDTO) {
     const config: PlantConfigDTO = await this.getConfigPlant();
+    const access = await this.notificationService.getAccessNotificationToken();
 
-    const values: Record<string, number> = {
-      temperature: Number(plantDTO.temperature),
-      humidity: Number(plantDTO.humidity),
-      light: Number(plantDTO.light),
-      soil_moisture: Number(plantDTO.soil),
-    };
+    if (access) {
+      const values: Record<string, number> = {
+        temperature: Number(plantDTO.temperature),
+        humidity: Number(plantDTO.humidity),
+        light: Number(plantDTO.light),
+        soil_moisture: Number(plantDTO.soil),
+      };
 
-    const limits: Record<string, { min: number; max: number }> = {
-      temperature: { min: config.min_temp, max: config.max_temp },
-      humidity: { min: config.min_humidity, max: config.max_humidity },
-      light: { min: config.min_light, max: config.max_light },
-      soil_moisture: {
-        min: config.min_soil_moisture,
-        max: config.max_soil_moisture,
-      },
-    };
+      const limits: Record<string, { min: number; max: number }> = {
+        temperature: { min: config.min_temp, max: config.max_temp },
+        humidity: { min: config.min_humidity, max: config.max_humidity },
+        light: { min: config.min_light, max: config.max_light },
+        soil_moisture: {
+          min: config.min_soil_moisture,
+          max: config.max_soil_moisture,
+        },
+      };
 
-    const now = Date.now();
+      const now = Date.now();
 
-    for (const key of Object.keys(values)) {
-      const value = values[key];
-      const { min, max } = limits[key];
+      for (const key of Object.keys(values)) {
+        const value = values[key];
+        const { min, max } = limits[key];
 
-      // Верхний порог
-      const highKey = `${key}_high`;
-      if (value > max && !this.notified[highKey]) {
-        if (
-          !this.lastNotification[highKey] ||
-          now - this.lastNotification[highKey] > this.COOLDOWN
-        ) {
-          this.notificationService.SendMessage(`${key} too high: ${value}`);
-          this.notified[highKey] = true;
-          this.lastNotification[highKey] = now;
+        // Верхний порог
+        const highKey = `${key}_high`;
+        if (value > max && !this.notified[highKey]) {
+          if (
+            !this.lastNotification[highKey] ||
+            now - this.lastNotification[highKey] > this.COOLDOWN
+          ) {
+            this.notificationService.SendMessage(`${key} too high: ${value}`);
+            this.notified[highKey] = true;
+            this.lastNotification[highKey] = now;
+          }
+        } else if (value < max - this.HYSTERESIS && this.notified[highKey]) {
+          this.notified[highKey] = false;
         }
-      } else if (value < max - this.HYSTERESIS && this.notified[highKey]) {
-        this.notified[highKey] = false;
-      }
 
-      // Нижний порог
-      const lowKey = `${key}_low`;
-      if (value < min && !this.notified[lowKey]) {
-        if (
-          !this.lastNotification[lowKey] ||
-          now - this.lastNotification[lowKey] > this.COOLDOWN
-        ) {
-          this.notificationService.SendMessage(`${key} too low: ${value}`);
-          this.notified[lowKey] = true;
-          this.lastNotification[lowKey] = now;
+        // Нижний порог
+        const lowKey = `${key}_low`;
+        if (value < min && !this.notified[lowKey]) {
+          if (
+            !this.lastNotification[lowKey] ||
+            now - this.lastNotification[lowKey] > this.COOLDOWN
+          ) {
+            this.notificationService.SendMessage(`${key} too low: ${value}`);
+            this.notified[lowKey] = true;
+            this.lastNotification[lowKey] = now;
+          }
+        } else if (value > min + this.HYSTERESIS && this.notified[lowKey]) {
+          this.notified[lowKey] = false;
         }
-      } else if (value > min + this.HYSTERESIS && this.notified[lowKey]) {
-        this.notified[lowKey] = false;
       }
     }
 
