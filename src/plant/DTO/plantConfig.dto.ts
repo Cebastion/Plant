@@ -7,6 +7,4 @@ export class PlantConfigDTO {
   max_light: number;
   min_soil_moisture: number;
   max_soil_moisture: number;
-  max_water: number;
-  min_water: number;
 }

@@ -7,5 +7,6 @@ import { FirebaseModule } from 'src/firebase/firebase.module';
   imports: [FirebaseModule],
   controllers: [NotificationController],
   providers: [NotificationService],
+  exports: [NotificationService],
 })
 export class NotificationModule { }

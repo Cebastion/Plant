@@ -5,7 +5,7 @@ import { PlantConfigDTO } from './DTO/plantConfig.dto';
 
 @Controller('plant')
 export class PlantController {
-  constructor(private readonly plantService: PlantService) { }
+  constructor(private readonly plantService: PlantService) {}
 
   @Post('')
   saveDataPlant(@Body() plantDTO: PlantDTO) {
@@ -22,7 +22,7 @@ export class PlantController {
     return this.plantService.getConfigPlant();
   }
 
-  @Post('/config')
+  @Post('/config/save')
   SaveConfigPlant(@Body() plantConfigDTO: PlantConfigDTO) {
     return this.plantService.SaveConfigPlant(plantConfigDTO);
   }

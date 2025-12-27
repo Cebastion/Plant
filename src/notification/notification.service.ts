@@ -9,7 +9,7 @@ export class NotificationService {
     useFcmV1: true,
   });
 
-  constructor(readonly FirebaseService: FirebaseService) { }
+  constructor(readonly FirebaseService: FirebaseService) {}
 
   async SaveTokenDevice(token: string) {
     this.FirebaseService.setCollection('tokenDevice');
@@ -32,13 +32,13 @@ export class NotificationService {
       });
   }
 
-  async SendMessage() {
+  async SendMessage(messagebody: string) {
     try {
-    const data = await this.getTokens()
+      const data = await this.getTokens();
       const message = {
         to: data[0].token,
         sound: 'default',
-        body: 'And here is the body!',
+        body: messagebody,
         data: { withSome: 'data' },
       };
       const chuncks = this.expo.chunkPushNotifications([message]);
