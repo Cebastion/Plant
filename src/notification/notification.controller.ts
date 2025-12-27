@@ -14,4 +14,9 @@ export class NotificationController {
   saveTokenDevice(@Body() token: string) {
     return this.notificationService.SaveTokenDevice(token);
   }
+
+  @Post('saveAccessNotificationToken')
+  saveAccessNotificationToken(@Body() access: boolean) {
+    return this.notificationService.SaveAccessNotificationToken(access);
+  }
 }

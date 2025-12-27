@@ -11,6 +11,27 @@ export class NotificationService {
 
   constructor(readonly FirebaseService: FirebaseService) {}
 
+  async SaveAccessNotificationToken(access: boolean) {
+    this.FirebaseService.setCollection('tokenDevice');
+    await this.FirebaseService.db
+      .collection('accessNotification')
+      .doc('access')
+      .set({ access: access });
+    return access;
+  }
+
+  async getAccessNotificationToken() {
+    this.FirebaseService.setCollection('tokenDevice');
+    return this.FirebaseService.db
+      .collection('accessNotification')
+      .get()
+      .then((querySnapshot) => {
+        return querySnapshot.docs.map((doc) => {
+          return doc.data().access;
+        });
+      });
+  }
+
   async SaveTokenDevice(token: string) {
     this.FirebaseService.setCollection('tokenDevice');
     await this.FirebaseService.db
