@@ -9,11 +9,11 @@ export class PlantService {
   }
 
   async saveDataPlant(plantDTO: PlantDTO) {
-    await this.firebaseService.collection.doc('plant').set(plantDTO);
+    this.firebaseService.updateValue('status/current', plantDTO);
     return plantDTO;
   }
 
   async getDataPlant() {
-    return (await this.firebaseService.collection.doc('plant').get()).data();
+    return await this.firebaseService.getValue('status/current');
   }
 }

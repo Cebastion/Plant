@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { FirebaseService } from './firebase.service';
+import { FirebaseController } from './firebase.controller';
 import * as admin from 'firebase-admin';
 
 const firebaseProvider = {
@@ -11,6 +12,7 @@ const firebaseProvider = {
         privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
         projectId: process.env.FIREBASE_PROJECT_ID,
       }),
+      databaseURL: process.env.FIREBASE_DATABASE_URL,
     });
   },
 };
@@ -19,5 +21,6 @@ const firebaseProvider = {
   imports: [],
   providers: [firebaseProvider, FirebaseService],
   exports: [FirebaseService],
+  controllers: [FirebaseController],
 })
-export class FirebaseModule { }
+export class FirebaseModule {}
