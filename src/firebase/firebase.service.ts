@@ -27,7 +27,7 @@ export class FirebaseService {
     await this.rdb().ref(path).update(value);
   }
 
-  setCollection(collectionName: 'setting' | 'plant') {
+  setCollection(collectionName: 'setting' | 'plantConfig' | 'tokenDevice') {
     this.collection = this.db.collection(collectionName);
   }
 }

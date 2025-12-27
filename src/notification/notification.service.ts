@@ -1,5 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import Expo from 'expo-server-sdk';
+import { FirebaseService } from 'src/firebase/firebase.service';
 
 @Injectable()
 export class NotificationService {
@@ -8,10 +9,33 @@ export class NotificationService {
     useFcmV1: true,
   });
 
+  constructor(readonly FirebaseService: FirebaseService) { }
+
+  async SaveTokenDevice(token: string) {
+    this.FirebaseService.setCollection('tokenDevice');
+    await this.FirebaseService.db
+      .collection('tokenDevice')
+      .doc(token)
+      .set({ token: token });
+    return token;
+  }
+
+  private async getTokens() {
+    this.FirebaseService.setCollection('tokenDevice');
+    return this.FirebaseService.db
+      .collection('tokenDevice')
+      .get()
+      .then((querySnapshot) => {
+        return querySnapshot.docs.map((doc) => {
+          return doc.data().token;
+        });
+      });
+  }
+
   async SendMessage() {
     try {
       const message = {
-        to: 'ExponentPushToken[Arwx0YOKEOpclgJnPFCi8k]',
+        to: await this.getTokens(),
         sound: 'default',
         body: 'And here is the body!',
         data: { withSome: 'data' },

@@ -5,7 +5,6 @@ import { PlantModule } from './plant/plant.module';
 import { FirebaseModule } from './firebase/firebase.module';
 import { ConfigModule } from '@nestjs/config';
 import { SettingModule } from './setting/setting.module';
-import { BridgeModule } from './bridge/bridge.module';
 import { NotificationModule } from './notification/notification.module';
 
 @Module({
@@ -17,10 +16,9 @@ import { NotificationModule } from './notification/notification.module';
       isGlobal: true,
     }),
     SettingModule,
-    BridgeModule,
     NotificationModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }
