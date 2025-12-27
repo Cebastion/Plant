@@ -15,7 +15,7 @@ export class NotificationService {
     this.FirebaseService.setCollection('tokenDevice');
     await this.FirebaseService.db
       .collection('tokenDevice')
-      .doc(token)
+      .doc('token')
       .set({ token: token });
     return token;
   }
@@ -34,8 +34,9 @@ export class NotificationService {
 
   async SendMessage() {
     try {
+    const data = await this.getTokens()
       const message = {
-        to: await this.getTokens(),
+        to: data[0].token,
         sound: 'default',
         body: 'And here is the body!',
         data: { withSome: 'data' },
