@@ -9,4 +9,9 @@ export class NotificationController {
   sendMessage() {
     return this.notificationService.SendMessage();
   }
+
+  @Post('saveTokenDevice')
+  saveTokenDevice(@Body() token: string) {
+    return this.notificationService.SaveTokenDevice(token);
+  }
 }
