@@ -7,7 +7,7 @@ export class NotificationController {
 
   @Get('')
   sendMessage() {
-    return this.notificationService.SendMessage();
+    return this.notificationService.SendMessage('test message');
   }
 
   @Post('saveTokenDevice')
