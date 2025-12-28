@@ -6,6 +6,7 @@ import { FirebaseModule } from './firebase/firebase.module';
 import { ConfigModule } from '@nestjs/config';
 import { SettingModule } from './setting/setting.module';
 import { NotificationModule } from './notification/notification.module';
+import { PlantNetModule } from './plant_net/plant_net.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { NotificationModule } from './notification/notification.module';
     }),
     SettingModule,
     NotificationModule,
+    PlantNetModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -31,6 +31,8 @@ export class PlantService {
     const config: PlantConfigDTO = await this.getConfigPlant();
     const access = await this.notificationService.getAccessNotificationToken();
 
+    console.log(access);
+
     if (access) {
       const values: Record<string, number> = {
         temperature: Number(plantDTO.temperature),
