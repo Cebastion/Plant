@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import axios, { AxiosInstance } from 'axios';
-import * as FormData from 'form-data';
+import FormData from 'form-data';
 import { SingleSpeciesIdentificationResponse } from './interfaces/SingleSpeciesIdentificationResponse.interface';
 import { DiseasesIdentificationResponse } from './interfaces/DiseasesIdentificationResponse.inteface';
 import { VarietiesIdentificationResponse } from './interfaces/VarietiesIdentificationResponse.interface';
